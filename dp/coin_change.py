@@ -24,8 +24,8 @@ class Solution:
         return dfs(amount, collections.defaultdict(int))
 
 # DFS + Mem(另一种写法，去掉lru_cache就是without mem的写法)
-		@lru_cache(None)
-		def dfs(rem):
+	@lru_cache(None)
+	def dfs(rem):
             if rem < 0:
                 return -1
             if rem == 0:
