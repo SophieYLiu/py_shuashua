@@ -1,3 +1,37 @@
+def middle_out(i_, j_, s_):
+    cnt = 0
+    while i_ >= 0 and j_ < len(s_):
+        if s_[i_] != s_[j_]:
+            return cnt
+        cnt += 1
+        i_ -= 1
+        j_ += 1
+    return cnt
+
+
+# iterate the string to group the sequential same chars
+def fun(chars):
+    counts = []
+    idx = 0
+    while idx < len(chars):
+        ch, cnt = chars[idx], 0
+        while idx < len(chars) and ch == chars[idx]:
+            cnt += 1
+            idx += 1
+        counts.append([ch, cnt])
+
+def isSubsequence(self, s: str, t: str) -> bool:
+    LEFT_BOUND, RIGHT_BOUND = len(s), len(t)
+
+    p_left = p_right = 0
+    while p_left < LEFT_BOUND and p_right < RIGHT_BOUND:
+        # move both pointers or just the right pointer
+        if s[p_left] == t[p_right]:
+            p_left += 1
+        p_right += 1
+
+    return p_left == LEFT_BOUND
+
 def maxProduct(self, nums: List[int]) -> int:
     mem = [[1,1]]*len(nums)
     mem[0] = [nums[0], nums[0]]
@@ -54,11 +88,12 @@ def maxProfit(self, prices: List[int]) -> int:
 
 # Binary search build-in:
 # Find the insertion position `idx`.
-idx = bisect.bisect_right(nums, target)
-if idx > 0 and nums[idx - 1] == target:
-    return idx - 1
-else:
-    return -1
+def fun():
+    idx = bisect.bisect_right(nums, target)
+    if idx > 0 and nums[idx - 1] == target:
+        return idx - 1
+    else:
+        return -1
 
 # prefix sum:
 def pivotIndex(self, nums):

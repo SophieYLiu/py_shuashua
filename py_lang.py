@@ -60,3 +60,8 @@ def dt_to_str(dt):
 
 def epoch_ms_to_dt(epoch):
     return datetime.fromtimestamp(epoch / 1000)
+
+import bisect
+bisect.bisect(lst, target)
+# bisect and bisect_right is the same
+

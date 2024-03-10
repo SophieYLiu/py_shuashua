@@ -2,6 +2,11 @@ from dateutil import parser
 import collections
 import json
 
+# how to get string time to epoch 1) convert string to dt 2) convert dt to epoch
+from datetime import datetime
+datetime_object = datetime.strptime("2009-03-08T00:28:31.807Z", '%y-%m-%dT%H:%M:%SZ')
+epoch = datetime_object.strftime('%s')
+
 class Query:
 
     def __init__(self, time_str, search_phrase, loc):

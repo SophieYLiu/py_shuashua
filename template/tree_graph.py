@@ -1,4 +1,4 @@
-# bfs
+# bfs - Note graph BFS needs visited/seen set
 def bfs(start_node):
     queue = collections.deque()
     queue.append(start_node)
@@ -54,3 +54,51 @@ def countComponents(self, n: int, edges: List[List[int]]) -> int:
     for x, y in edges:
         union(x, y)
     return len({find(i) for i in range(n)})
+
+
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        # build graph
+        graph = collections.defaultdict(list)
+        visited = set()
+        # build 2-way (undirected) graph
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
+
+        if n == 0:
+            return 0
+
+        # bfs
+        def bfs(start_node):
+            queue = collections.deque()
+            queue.append(start_node)
+            visited.add(start_node)
+            while queue:
+                node = queue.popleft()
+                for nei in graph[node]:
+                    if nei not in visited:
+                        queue.append(nei)
+                        visited.add(nei)
+
+        cnt = 0
+        for i in range(n):
+            if i not in visited:
+                bfs(i)
+                cnt +=1
+        return cnt
+
+        # dfs: start with a node, and mark all reachables
+        # def dfs(node):
+        #     for nei in graph.get(node, []):
+        #         if nei not in visited:
+        #             visited.add(nei)
+        #             dfs(nei)
+        #
+        # cnt = 0
+        # for i in range(n):
+        #     if i not in visited:
+        #         cnt += 1
+        #         dfs(i)
+        #         visited.add(i)
+        # return cnt
