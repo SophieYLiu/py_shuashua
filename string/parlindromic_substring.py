@@ -1,14 +1,13 @@
+# Given a string s, return the number of palindromic substrings in it.
 class Solution:
     def countSubstrings(self, s: str) -> int:
 
         def middle_out(i_, j_, s_):
             cnt = 0
-            while i_ >= 0 and j_ < len(s_):
-                if s_[i_] != s_[j_]:
-                    return cnt
-                cnt += 1
+            while i_ >= 0 and j_ < len(s) and s[i_] == s[j_]:
                 i_ -= 1
                 j_ += 1
+                cnt += 1
             return cnt
 
         ans = 0

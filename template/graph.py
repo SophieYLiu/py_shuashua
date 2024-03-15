@@ -1,4 +1,13 @@
+import collections
+
+# build graph (bi-dir) from list of edges
+graph = collections.defaultdict(list)
+for a, b in edges:
+    graph[a].append(b)
+    graph[b].append(a)
+
 # bfs - Note graph BFS needs visited/seen set
+visited = set()
 def bfs(start_node):
     queue = collections.deque()
     queue.append(start_node)
