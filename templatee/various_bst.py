@@ -188,6 +188,38 @@ def closestValue(self, root: Optional[TreeNode], target: float) -> int:
     return closest
 
 
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+
+        # sol 1: get all numbers in list, and search them, and add. O(n) space and time
+        # lst = []
+        # def dfs(root, lst):
+        #     if not root:
+        #         return
+        #     dfs(root.left, lst)
+        #     lst.append(root.val)
+        #     dfs(root.right, lst)
+
+        # dfs(root, lst)
+        # low_idx, high_idx = lst.index(low), lst.index(high)
+        # return sum(lst[low_idx : high_idx+1])
+
+        # sol2: more elegant
+        ans = 0
+        if not root:
+            return 0
+        if low <= root.val <= high:
+            ans = root.val
+
+        # range should be in the left subtree
+        if low <= root.val or high <= root.val:
+            ans += self.rangeSumBST(root.left, low, high)
+
+        # range should be in the right subtree
+        if root.val <= low or root.val <= high:
+            ans += self.rangeSumBST(root.right, low, high)
+        return ans
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -217,6 +249,29 @@ class Solution:
         dfs(root)
         return ans
 
+# BT longest consecutive seq
+# need pass both cur node and its parent.The logic is 2-fold: continue count or start over
+class Solution:
+ans = 1
+def longestConsecutive(self, root: Optional[TreeNode]) -> int:
+    def dfs(node, parent, v):
+        self.ans = max(v, self.ans)
+        if not node:
+            return
+        if parent and node.val == parent.val + 1:
+            # continue counting
+            dfs(node.left, node, v + 1)
+            dfs(node.right, node, v + 1)
+        else:
+            # start from fresh
+            dfs(node.left, node, 1)
+            dfs(node.right, node, 1)
+
+    if not root:
+        return 0
+    dfs(root, None, 1)
+    return self.ans
+
 # Kth smallest in BST
 def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
     # easy sol: just print out in order
@@ -234,13 +289,11 @@ def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
     ans = None
 
     def dfs(node, k):
-
         nonlocal ans, cnt
-
         if not node:
             return
 
-        # first go left
+        # first go left, which starts with the smallest
         if node.left:
             dfs(node.left, k)
 
@@ -284,7 +337,7 @@ class Solution:
 
         return dfs(root, subRoot)
 
-
+# BELOW for TREE PATH problems, we need use backtrack
 # sum root to leaf numbers: convert path string to number and add eg 2 paths [1,2] and [1.3] => 12+13 = 25
 class Solution:
     # key points: 其中一个base case是判断是不是leaf node（左右都是null）
@@ -299,19 +352,42 @@ class Solution:
                 n -= 1
             return num
 
-        def dfs(root, path):
-            if not root:
+        def dfs(node, path):
+            if not node:
                 return 0
 
-            path.append(root.val)
-            if not root.left and not root.right:
-                return path_to_num(path)
+            # in this block where we find a path - DONT ALTER PATH!
+            if not node.left and not node.right:
+                temp1 = list(path) + [node.val]  # cant use path.append(root.val) and then use path for num
+                return path_to_num(temp1)
 
             ans = 0
-            for node in [root.left, root.right]:
-                if node:  # 没有这个条件 [1, null, 5] fail （结果是5而不是15） # key points
-                    ans += dfs(node, path)
-                    path.pop() # key points! need pop becoz line 306 append one
+            for child in [node.left, node.right]:
+                path.append(node.val)  # here is node not child!!
+                ans += dfs(child, path)  # here in recursive function is child
+                path.pop()
             return ans
 
         return dfs(root, [])
+
+# Binary Tree Paths
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+
+        def dfs(node, temp):
+            if not node:
+                return
+
+            if not node.left and not node.right:
+                temp1 = list(temp) + [node.val]
+                temp_str = "->".join([str(each) for each in temp1])
+                res.append(temp_str)
+
+            for child in [node.left, node.right]:
+                temp.append(node.val)
+                dfs(child, temp)
+                temp.pop()
+
+        res = []
+        dfs(root, [])
+        return res

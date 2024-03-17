@@ -46,4 +46,31 @@ def firstBadVersion(self, n: int) -> int:
             left = mid + 1
     return left
 
-# is BST
+# find min in ROTATED sorted array
+class Solution:
+    # min is the pivot point that divides into two
+    # in the BS loop, first 找change points by comparing mid and before and after
+    # next do 二分判断：mid 跟first_num比较
+    def findMin(self, nums: List[int]) -> int:
+        if not nums:
+            return -1
+        if len(nums) == 1:
+            return nums[0]
+
+        s = 0
+        e = len(nums) - 1
+        if nums[e] > nums[0]:
+            return nums[0]
+
+        while s < e:
+            p = s + (e - s) // 2
+            if nums[p] > nums[p + 1]: # change point at p+1
+                return nums[p + 1]
+            if nums[p - 1] > nums[p]: # change point at p
+                return nums[p]
+            # compare first and last element to know which side contains rotated
+            if nums[p] > nums[0]:
+                s = p + 1
+            else:
+                e = p - 1
+        return s
