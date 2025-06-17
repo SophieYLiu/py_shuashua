@@ -1,6 +1,15 @@
 class Solution:
     # Time O(T), Space O(1)
-    def isSubsequence(self, s: str, t: str) -> bool:
+
+    def isSubsequence_best(self, s: str, t: str) -> bool:
+        i = j = 0
+        while i < len(s) and j < len(t):
+            if s[i] == t[j]:
+                i += 1
+            j += 1
+        return i == len(s)
+
+    def isSubsequence_1(self, s: str, t: str) -> bool:
         i = 0
         j = 0
         while i < len(s):
@@ -15,7 +24,7 @@ class Solution:
         return True
 
     # ALT: Slight better in writing
-    def isSubsequence1(self, s: str, t: str) -> bool:
+    def isSubsequence_2(self, s: str, t: str) -> bool:
         LEFT_BOUND, RIGHT_BOUND = len(s), len(t)
 
         p_left = p_right = 0

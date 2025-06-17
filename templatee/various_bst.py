@@ -205,20 +205,22 @@ class Solution:
         # return sum(lst[low_idx : high_idx+1])
 
         # sol2: more elegant
-        ans = 0
-        if not root:
-            return 0
-        if low <= root.val <= high:
-            ans = root.val
+        def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
 
-        # range should be in the left subtree
-        if low <= root.val or high <= root.val:
-            ans += self.rangeSumBST(root.left, low, high)
+            ans = 0
 
-        # range should be in the right subtree
-        if root.val <= low or root.val <= high:
-            ans += self.rangeSumBST(root.right, low, high)
-        return ans
+            def inorder(node):
+                nonlocal ans
+                if not node:
+                    return
+
+                inorder(node.left)
+                if low <= node.val <= high:
+                    ans += node.val
+                inorder(node.right)
+
+            inorder(root)
+            return ans
 
 # Definition for a binary tree node.
 # class TreeNode:

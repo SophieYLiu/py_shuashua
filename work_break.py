@@ -21,7 +21,7 @@ def wordBreak(self, s: str, wordDict: List[str]) -> bool:
 
     return dfs(0)
 
-# DP (O(n^2))
+# DP
 ''' 
 Time complexity: O(n⋅m⋅k)
 Spae: O(n)
